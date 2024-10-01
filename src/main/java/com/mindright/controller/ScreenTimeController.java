@@ -5,6 +5,7 @@ import com.mindright.service.ScreenTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,13 +20,15 @@ public class ScreenTimeController {
         return screenTimeService.getUserScreenTimeLogs(userId);
     }
 
-    @PostMapping("/start")
-    public ScreenTimeLog startLog(@RequestBody ScreenTimeLog log) {
-        return screenTimeService.startLog(log);
-    }
+    @PostMapping("/log")
+    public ScreenTimeLog logScreenTime(
+            @RequestParam Long userId,
+            @RequestParam String appName,
+            @RequestParam String startTime,
+            @RequestParam String endTime) {
 
-    @PostMapping("/end/{logId}")
-    public ScreenTimeLog endLog(@PathVariable Long logId) {
-        return screenTimeService.endLog(logId);
+        LocalDateTime start = LocalDateTime.parse(startTime);
+        LocalDateTime end = LocalDateTime.parse(endTime);
+        return screenTimeService.logScreenTime(userId, appName, start, end);
     }
 }

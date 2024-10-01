@@ -1,6 +1,6 @@
 package com.mindright.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -15,8 +15,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role;  // Enum for roles like USER, ADMIN
+    private Role role;
 
-    // Optional fields for security
-    private boolean isMFAEnabled; // Multi-factor Authentication flag
+    private boolean isMFAEnabled;  // Multi-factor Authentication flag
 }
