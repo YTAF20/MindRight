@@ -1,7 +1,9 @@
 package com.mindright.service;
 
 import com.mindright.model.ScreenTimeLog;
+import com.mindright.model.User;
 import com.mindright.repository.ScreenTimeLogRepository;
+import com.mindright.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +16,22 @@ public class ScreenTimeService {
     @Autowired
     private ScreenTimeLogRepository screenTimeLogRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<ScreenTimeLog> getUserScreenTimeLogs(Long userId) {
         return screenTimeLogRepository.findByUserId(userId);
     }
 
-    public ScreenTimeLog startLog(ScreenTimeLog log) {
-        log.setStartTime(LocalDateTime.now());
-        return screenTimeLogRepository.save(log);
-    }
+    public ScreenTimeLog logScreenTime(Long userId, String appName, LocalDateTime startTime, LocalDateTime endTime) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-    public ScreenTimeLog endLog(Long logId) {
-        ScreenTimeLog log = screenTimeLogRepository.findById(logId).orElseThrow(() -> new RuntimeException("Log not found"));
-        log.setEndTime(LocalDateTime.now());
+        ScreenTimeLog log = new ScreenTimeLog();
+        log.setUser(user);
+        log.setAppName(appName);
+        log.setStartTime(startTime);
+        log.setEndTime(endTime);
+
         return screenTimeLogRepository.save(log);
     }
 }

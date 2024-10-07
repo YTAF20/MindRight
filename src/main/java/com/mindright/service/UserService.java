@@ -3,6 +3,8 @@ package com.mindright.service;
 import com.mindright.model.User;
 import com.mindright.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,18 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public boolean checkIfUserExists(String username) {
-        return userRepository.findByUsername(username) != null;
+    public User getLoggedInUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return userRepository.findByUsername(username);
     }
 
-    public void enableMFA(User user) {
-        user.setMFAEnabled(true);
-        userRepository.save(user);
+    public boolean checkIfUserExists(String username) {
+        return userRepository.findByUsername(username) != null;
     }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>Welcome to Your Dashboard</h1>
+<p>Your screen time and blocked apps will be displayed here.</p>
+
+<h2>Your Screen Time Logs</h2>
+<ul>
+    <li th:each="log : ${screenTimeLogs}">
+        <span th:text="${log.appName}"></span>:
+        <span th:text="${log.totalTimeSpent}"></span> minutes
+    </li>
+</ul>
+
+<h2>Your Goals</h2>
+<ul>
+    <li th:each="goal : ${goals}">
+        <span th:text="${goal.appName}"></span>:
+        <span th:text="${goal.dailyLimitInMinutes}"></span> minutes/day
+    </li>
+</ul>
+
+<h2>Blocked Apps</h2>
+<ul>
+    <li th:each="blockedApp : ${blockedApps}">
+        <span th:text="${blockedApp.appName}"></span>
+    </li>
+</ul>
+</body>
+</html>

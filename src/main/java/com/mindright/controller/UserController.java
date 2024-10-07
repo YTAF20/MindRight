@@ -1,32 +1,27 @@
 package com.mindright.controller;
 
-import com.mindright.model.User;
-import com.mindright.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import java.security.Principal;
 
-@RestController
-@RequestMapping("/api/users")
+@Controller
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        if (userService.checkIfUserExists(user.getUsername())) {
-            throw new RuntimeException("Username already exists!");
-        }
-        return userService.registerUser(user);
+    @GetMapping("/dashboard")
+    public String getDashboard(Model model, Principal principal) {
+        // You can fetch the logged-in user's data using the principal name (username)
+        model.addAttribute("username", principal.getName());
+        return "dashboard";  // This refers to the Thymeleaf template `dashboard.html`
     }
 
-    @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) {
-        return userService.findUser(username);
+    @GetMapping("/login")
+    public String login() {
+        return "login";  // Refers to `login.html`
     }
 
-    @PostMapping("/enableMFA")
-    public void enableMFA(@RequestBody User user) {
-        userService.enableMFA(user);
+    @GetMapping("/register")
+    public String register() {
+        return "register";  // Refers to `register.html`
     }
 }

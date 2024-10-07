@@ -28,9 +28,4 @@ public class BlockedAppController {
     public List<BlockedApp> getBlockedApps(@PathVariable Long userId) {
         return blockedAppService.getBlockedAppsForUser(userId);
     }
-
-    @GetMapping("/isblocked/{userId}/{appName}")
-    public boolean isAppBlocked(@PathVariable Long userId, @PathVariable String appName) {
-        return blockedAppService.isAppBlocked(userId, appName);
-    }
 }
