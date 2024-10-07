@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "MindRight",
+  "version": "1.0",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "tabs"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Block Websites"
+  },
+  "host_permissions": [
+    "*://*/*"
+  ]
+}
