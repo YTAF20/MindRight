@@ -1,6 +1,6 @@
 package com.mindright.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +16,9 @@ public class ScreenTimeLog {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    // Methods to calculate total time spent
     public long getTotalTimeSpent() {
         return java.time.Duration.between(startTime, endTime).toMinutes();
     }
+
+    // Getters and Setters
 }
