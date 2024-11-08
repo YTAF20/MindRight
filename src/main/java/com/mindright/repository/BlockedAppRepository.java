@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface BlockedAppRepository extends JpaRepository<BlockedApp, Long> {
     List<BlockedApp> findByUserId(Long userId);
-    List<BlockedApp> findByUserIdAndAppName(Long userId, String appName);
 }

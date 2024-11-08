@@ -24,4 +24,9 @@ public class GoalService {
     public void deleteGoal(Long goalId) {
         goalRepository.deleteById(goalId);
     }
+
+    public List<Goal> getGoals() {
+        return goalRepository.findAll();
+    }
+
 }

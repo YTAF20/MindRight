@@ -15,7 +15,7 @@ public class BlockedAppService {
     private BlockedAppRepository blockedAppRepository;
 
     public BlockedApp blockApp(BlockedApp blockedApp) {
-        blockedApp.setBlockStartTime(LocalDateTime.now());
+        blockedApp.getBlockStartTime();
         return blockedAppRepository.save(blockedApp);
     }
 
@@ -27,8 +27,7 @@ public class BlockedAppService {
         return blockedAppRepository.findByUserId(userId);
     }
 
-    public boolean isAppBlocked(Long userId, String appName) {
-        List<BlockedApp> blockedApps = blockedAppRepository.findByUserIdAndAppName(userId, appName);
-        return blockedApps.stream().anyMatch(BlockedApp::isBlocked);
+    public List<BlockedApp> getBlockedApps() {
+        return blockedAppRepository.findAll();
     }
 }

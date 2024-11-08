@@ -1,10 +1,10 @@
 package com.mindright.controller;
 
 import com.mindright.model.User;
-import com.mindright.service.UserService;
-import com.mindright.service.ScreenTimeService;
-import com.mindright.service.GoalService;
 import com.mindright.service.BlockedAppService;
+import com.mindright.service.GoalService;
+import com.mindright.service.ScreenTimeService;
+import com.mindright.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +28,7 @@ public class DashboardController {
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         User user = userService.getLoggedInUser();
-        model.addAttribute("screenTimeLogs", screenTimeService.getUserScreenTimeLogs(user.getId()));
-        model.addAttribute("goals", goalService.getUserGoals(user.getId()));
-        model.addAttribute("blockedApps", blockedAppService.getBlockedAppsForUser(user.getId()));
+        model.addAttribute("screenTimeLogs", screenTimeService.getUserScreenTimeLogs(user.getId())).addAttribute("goals", goalService.getUserGoals(user.getId())).addAttribute("blockedApps", blockedAppService.getBlockedAppsForUser(user.getId()));
         return "dashboard";
     }
 }

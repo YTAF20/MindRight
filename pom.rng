@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar ns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <element name="project">
+            <attribute name="xsi:schemaLocation"/>
+            <element name="modelVersion">
+                <data type="NMTOKEN"/>
+            </element>
+            <element name="parent">
+                <ref name="groupId"/>
+                <ref name="artifactId"/>
+                <ref name="version"/>
+                <element name="relativePath">
+                    <empty/>
+                </element>
+            </element>
+            <ref name="groupId"/>
+            <ref name="artifactId"/>
+            <ref name="version"/>
+            <element name="name">
+                <data type="NCName"/>
+            </element>
+            <element name="description">
+                <text/>
+            </element>
+            <element name="properties">
+                <element name="java.version">
+                    <data type="integer"/>
+                </element>
+            </element>
+            <element name="repositories">
+                <element name="repository">
+                    <element name="id">
+                        <data type="NCName"/>
+                    </element>
+                    <element name="url">
+                        <data type="anyURI"/>
+                    </element>
+                </element>
+            </element>
+            <element name="dependencies">
+                <oneOrMore>
+                    <element name="dependency">
+                        <ref name="groupId"/>
+                        <ref name="artifactId"/>
+                        <optional>
+                            <element name="scope">
+                                <data type="NCName"/>
+                            </element>
+                        </optional>
+                        <optional>
+                            <element name="optional">
+                                <data type="boolean"/>
+                            </element>
+                        </optional>
+                    </element>
+                </oneOrMore>
+            </element>
+            <element name="build">
+                <element name="plugins">
+                    <element name="plugin">
+                        <ref name="groupId"/>
+                        <ref name="artifactId"/>
+                    </element>
+                </element>
+            </element>
+        </element>
+    </start>
+    <define name="groupId">
+        <element name="groupId">
+            <data type="NCName"/>
+        </element>
+    </define>
+    <define name="artifactId">
+        <element name="artifactId">
+            <data type="NCName"/>
+        </element>
+    </define>
+    <define name="version">
+        <element name="version">
+            <data type="NMTOKEN"/>
+        </element>
+    </define>
+</grammar>
