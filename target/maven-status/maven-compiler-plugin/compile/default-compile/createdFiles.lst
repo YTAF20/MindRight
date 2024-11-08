@@ -1,0 +1,8 @@
+com/mindright/service/BlockedAppService.class
+com/mindright/repository/BlockedAppRepository.class
+com/mindright/controller/BlockedAppController.class
+com/mindright/config/SecurityConfig.class
+com/mindright/model/User.class
+com/mindright/model/BlockedApp.class
+com/mindright/model/Role.class
+com/mindright/controller/CustomErrorController.class
