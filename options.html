@@ -1,18 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Website Blocker Options</title>
+    <meta charset="UTF-8">
+    <title>MindRight - Block a URL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden; 
+            height: 100vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #2c3e50, #34495e, #2c3e50); 
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-200px) translateY(0); }
+            50% { transform: translateX(50vw) translateY(-40px); }
+            100% { transform: translateX(100vw) translateY(0); }
+        }
+
+        .cloud:nth-child(1) { width: 120px; height: 60px; top: 50px; left: -150px; animation: float 15s linear infinite; }
+        .cloud:nth-child(2) { width: 150px; height: 70px; top: 150px; left: -200px; animation: float 18s linear infinite; }
+        .cloud:nth-child(3) { width: 100px; height: 50px; top: 300px; left: -100px; animation: float 12s linear infinite; }
+        .cloud:nth-child(4) { width: 130px; height: 65px; top: 220px; left: -250px; animation: float 16s linear infinite; }
+        .cloud:nth-child(5) { width: 140px; height: 70px; top: 80px; left: -200px; animation: float 14s linear infinite; }
+        .cloud:nth-child(6) { width: 150px; height: 75px; top: 400px; left: -200px; animation: float 17s linear infinite; }
+        .cloud:nth-child(7) { width: 120px; height: 60px; top: 500px; left: -100px; animation: float 19s linear infinite; }
+
+        .container {
+            background-color: rgba(60, 70, 90, 0.85); 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ecf0f1;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #bdc3c7;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 0, 0, 0.2); 
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9); 
+            color: #333; 
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #27ae60; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838; 
+        }
+
+        #message {
+            margin-top: 10px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+
+        .blocked-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .blocked-list h4 {
+            font-size: 16px;
+            color: #ecf0f1;
+            margin: 0;
+        }
+
+        .blocked-list ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .blocked-list li {
+            color: #bdc3c7;
+            padding: 5px 0;
+            border-bottom: 1px solid #7f8c8d;
+        }
+    </style>
 </head>
 <body>
-    <h3>Set Block Time (Options)</h3>
-    <input type="text" id="websites" placeholder="Enter websites (comma-separated)">
-    <input type="number" id="time" placeholder="Minutes">
-    <button id="block">Block</button>
+    <div class="background"></div>
 
-    <h3>Blocked Websites (Options)</h3>
-    <ul id="blocked-websites-list"></ul>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
 
-    <button id="unblock-selected">Unblock Selected</button>
+    <div class="container">
+        <div class="title">MindRight</div>
+        <div class="subtitle">Block a URL</div>
+        <input type="text" id="urlInput" placeholder="Enter URL to block">
+        <input type="number" id="timeInput" placeholder="Time in minutes">
+        <button id="blockButton">Block URL</button>
+        <div id="message"></div>
+        <div class="blocked-list">
+            <h4>Blocked URLs</h4>
+            <ul id="blockedList"></ul>
+        </div>
+    </div>
 
     <script src="popup.js"></script>
 </body>

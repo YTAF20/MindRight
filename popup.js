@@ -1,77 +1,76 @@
-document.getElementById('block').addEventListener('click', function() {
-    const websites = document.getElementById('websites').value.split(',');
-    const blockDuration = parseInt(document.getElementById('time').value);
-    const blockEndTime = new Date().getTime() + blockDuration * 60 * 1000;
+document.addEventListener("DOMContentLoaded", () => {
+    const blockButton = document.getElementById('blockButton');
+    const urlInput = document.getElementById('urlInput');
+    const timeInput = document.getElementById('timeInput');
+    const messageDiv = document.getElementById('message');
+    const blockedList = document.getElementById('blockedList');
 
-    chrome.storage.local.get({ blockedWebsites: [] }, function(data) {
-        const updatedWebsites = data.blockedWebsites.concat(
-            websites.map(site => ({ site: site.trim(), blockEndTime }))
-        );
+    loadBlockedUrls();
 
-        // Update local storage with the blocked websites
-        chrome.storage.local.set({ blockedWebsites: updatedWebsites }, function() {
-            // Send a message to the background script to block each website
-            websites.forEach(site => {
-                chrome.runtime.sendMessage({ action: 'blockWebsite', url: site.trim() }, (response) => {
-                    console.log(response.message);  // Ensure we receive a response from background.js
-                });
-            });
+    blockButton.addEventListener('click', () => {
+        const url = urlInput.value.trim();
+        const time = parseInt(timeInput.value.trim());
 
-            // Immediately update the UI to reflect blocked websites
-            displayBlockedWebsites();
-            alert('Websites blocked for ' + blockDuration + ' minutes');
-        });
-    });
-});
-
-document.getElementById('unblock-selected').addEventListener('click', function() {
-    chrome.storage.local.get({ blockedWebsites: [] }, function(data) {
-        const checkboxes = document.querySelectorAll('.unblock-checkbox:checked');
-        const websitesToUnblock = Array.from(checkboxes).map(cb => cb.value);
-
-        const updatedWebsites = data.blockedWebsites.filter(item => !websitesToUnblock.includes(item.site));
-
-        // Update local storage after unblocking websites
-        chrome.storage.local.set({ blockedWebsites: updatedWebsites }, function() {
-            // Send a message to the background script to unblock the websites
-            websitesToUnblock.forEach((site, index) => {
-                chrome.runtime.sendMessage({ action: 'unblockWebsite', ruleId: index + 1 }, (response) => {
-                    console.log(response.message);  // Ensure we receive a response from background.js
-                });
-            });
-
-            // Immediately update the UI to reflect unblocked websites
-            displayBlockedWebsites();
-            alert('Selected websites have been unblocked');
-        });
-    });
-});
-
-function displayBlockedWebsites() {
-    chrome.storage.local.get({ blockedWebsites: [] }, function(data) {
-        const currentTime = new Date().getTime();
-        const blockedWebsitesList = document.getElementById('blocked-websites-list');
-        blockedWebsitesList.innerHTML = '';  // Clear the list
-
-        if (data.blockedWebsites.length === 0) {
-            blockedWebsitesList.innerHTML = '<li>No websites blocked</li>';
-        } else {
-            data.blockedWebsites.forEach(item => {
-                const remainingTime = Math.max(0, Math.round((item.blockEndTime - currentTime) / 60000));
-                const listItem = document.createElement('li');
-
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'unblock-checkbox';
-                checkbox.value = item.site;
-
-                listItem.textContent = `${item.site} - ${remainingTime} minutes remaining`;
-                listItem.prepend(checkbox);
-                blockedWebsitesList.appendChild(listItem);
-            });
+        if (!url || isNaN(time) || time <= 0) {
+            messageDiv.textContent = 'Please enter a valid URL and time in minutes.';
+            return;
         }
-    });
-}
 
-// Load blocked websites when the popup is opened
-document.addEventListener('DOMContentLoaded', displayBlockedWebsites);
+        chrome.storage.sync.get('blockedUrls', (data) => {
+            const blockedUrls = data.blockedUrls || [];
+
+            if (blockedUrls.some(block => block.url === url)) {
+                messageDiv.textContent = 'URL already blocked.';
+                return;
+            }
+
+            const expiration = Date.now() + time * 60000; 
+
+            blockedUrls.push({ url, expiration });
+            chrome.storage.sync.set({ blockedUrls }, () => {
+                messageDiv.textContent = 'URL blocked successfully!';
+                urlInput.value = '';
+                timeInput.value = '';
+
+                displayBlockedUrl(url, expiration);
+            });
+
+            chrome.alarms.create(url, { when: expiration });
+        });
+    });
+});
+
+// Function to load and display blocked URLs with time left
+const loadBlockedUrls = () => {
+    chrome.storage.sync.get('blockedUrls', (data) => {
+        const blockedUrls = data.blockedUrls || [];
+        blockedUrls.forEach(({ url, expiration }) => {
+            displayBlockedUrl(url, expiration);
+        });
+    });
+};
+
+// Function to display a blocked URL and calculate remaining time
+const displayBlockedUrl = (url, expiration) => {
+    const blockedList = document.getElementById('blockedList');
+    const timeLeft = Math.max(0, Math.floor((expiration - Date.now()) / 1000)); // Time left in seconds
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    const li = document.createElement('li');
+    li.textContent = `${url} - Time left: ${minutes}m ${seconds}s`;
+    blockedList.appendChild(li);
+
+    setInterval(() => {
+        const updatedTimeLeft = Math.max(0, Math.floor((expiration - Date.now()) / 1000));
+        const updatedMinutes = Math.floor(updatedTimeLeft / 60);
+        const updatedSeconds = updatedTimeLeft % 60;
+
+        li.textContent = `${url} - Time left: ${updatedMinutes}m ${updatedSeconds}s`;
+
+       
+        if (updatedTimeLeft <= 0) {
+            li.remove(); 
+        }
+    }, 1000);
+};
