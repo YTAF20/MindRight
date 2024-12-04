@@ -9,46 +9,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     blockButton.addEventListener('click', () => {
         let url = urlInput.value.trim();
-        const time = parseInt(timeInput.value.trim());
-        //Normalize the URL sub block subdomains 
-        if (!url.startsWith('http')) {
-            url = `http://${url}`; 
-        }
 
+        if (!url.startsWith('http')) {
+            url = `http://${url}`;
+        }
         try {
             const parsedUrl = new URL(url);
-            const rootDomain = parsedUrl.hostname.replace(/^www\./, ''); // Extract root domain
-
-            if (!rootDomain) {
-                messageDiv.textContent = 'Please enter a valid URL.';
+            const domain = parsedUrl.hostname;
+            if (!/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain)) {
+                messageDiv.textContent = 'Please enter a valid domain (e.g., hulu.com or www.hulu.com).';
                 return;
             }
-
+            const time = parseInt(timeInput.value.trim());
             if (isNaN(time) || time <= 0) {
                 messageDiv.textContent = 'Please enter a valid time in minutes.';
                 return;
             }
-
             chrome.storage.sync.get('blockedUrls', (data) => {
                 const blockedUrls = data.blockedUrls || [];
 
-                if (blockedUrls.some(block => block.url === rootDomain)) {
+                if (blockedUrls.some(block => block.url === domain)) {
                     messageDiv.textContent = 'Domain already blocked.';
                     return;
                 }
 
                 const expiration = Date.now() + time * 60000;
 
-                blockedUrls.push({ url: rootDomain, expiration });
+                blockedUrls.push({ url: domain, expiration });
                 chrome.storage.sync.set({ blockedUrls }, () => {
                     messageDiv.textContent = 'Domain blocked successfully!';
                     urlInput.value = '';
                     timeInput.value = '';
 
-                    displayBlockedUrl(rootDomain, expiration);
+                    displayBlockedUrl(domain, expiration);
                 });
 
-                chrome.alarms.create(rootDomain, { when: expiration });
+                chrome.alarms.create(domain, { when: expiration });
             });
         } catch (error) {
             messageDiv.textContent = 'Invalid URL format.';

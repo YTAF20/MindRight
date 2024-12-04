@@ -142,7 +142,7 @@ const checkBlockedUrls = () => {
       const now = Date.now();
 
       const isBlocked = blockedUrls.some(({ url, expiration }) =>
-          currentDomain.endsWith(url) && now < expiration
+          (currentDomain === url || currentDomain.endsWith(`.${url}`)) && now < expiration
       );
 
       if (isBlocked) {

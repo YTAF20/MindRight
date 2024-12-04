@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MindRight",
   "version": "0.1.2",
-  "permissions": ["storage", "alarms", "tabs"],
+  "permissions": ["storage", "alarms", "tabs", "notifications"],
   "action": {},
   "background": {
     "service_worker": "background.js"
