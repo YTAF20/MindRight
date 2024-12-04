@@ -137,20 +137,21 @@ const generateHTML = (pageName) => {
 
 const checkBlockedUrls = () => {
   chrome.storage.sync.get('blockedUrls', (data) => {
-    const blockedUrls = data.blockedUrls || [];
-    const currentUrl = window.location.href;
-    const now = Date.now();
+      const blockedUrls = data.blockedUrls || [];
+      const currentDomain = new URL(window.location.href).hostname.replace(/^www\./, '');
+      const now = Date.now();
 
-    const isBlocked = blockedUrls.some(({ url, expiration }) =>
-      currentUrl.includes(url) && now < expiration
-    );
+      const isBlocked = blockedUrls.some(({ url, expiration }) =>
+          currentDomain.endsWith(url) && now < expiration
+      );
 
-    if (isBlocked) {
-      const pageName = new URL(currentUrl).hostname;
-      document.head.innerHTML = generateSTYLES();
-      document.body.innerHTML = generateHTML(pageName);
-    }
+      if (isBlocked) {
+          const pageName = new URL(window.location.href).hostname;
+          document.head.innerHTML = generateSTYLES();
+          document.body.innerHTML = generateHTML(pageName);
+      }
   });
 };
+
 
 checkBlockedUrls();

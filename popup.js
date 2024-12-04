@@ -8,35 +8,51 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBlockedUrls();
 
     blockButton.addEventListener('click', () => {
-        const url = urlInput.value.trim();
+        let url = urlInput.value.trim();
         const time = parseInt(timeInput.value.trim());
-
-        if (!url || isNaN(time) || time <= 0) {
-            messageDiv.textContent = 'Please enter a valid URL and time in minutes.';
-            return;
+        //Normalize the URL sub block subdomains 
+        if (!url.startsWith('http')) {
+            url = `http://${url}`; 
         }
 
-        chrome.storage.sync.get('blockedUrls', (data) => {
-            const blockedUrls = data.blockedUrls || [];
+        try {
+            const parsedUrl = new URL(url);
+            const rootDomain = parsedUrl.hostname.replace(/^www\./, ''); // Extract root domain
 
-            if (blockedUrls.some(block => block.url === url)) {
-                messageDiv.textContent = 'URL already blocked.';
+            if (!rootDomain) {
+                messageDiv.textContent = 'Please enter a valid URL.';
                 return;
             }
 
-            const expiration = Date.now() + time * 60000; 
+            if (isNaN(time) || time <= 0) {
+                messageDiv.textContent = 'Please enter a valid time in minutes.';
+                return;
+            }
 
-            blockedUrls.push({ url, expiration });
-            chrome.storage.sync.set({ blockedUrls }, () => {
-                messageDiv.textContent = 'URL blocked successfully!';
-                urlInput.value = '';
-                timeInput.value = '';
+            chrome.storage.sync.get('blockedUrls', (data) => {
+                const blockedUrls = data.blockedUrls || [];
 
-                displayBlockedUrl(url, expiration);
+                if (blockedUrls.some(block => block.url === rootDomain)) {
+                    messageDiv.textContent = 'Domain already blocked.';
+                    return;
+                }
+
+                const expiration = Date.now() + time * 60000;
+
+                blockedUrls.push({ url: rootDomain, expiration });
+                chrome.storage.sync.set({ blockedUrls }, () => {
+                    messageDiv.textContent = 'Domain blocked successfully!';
+                    urlInput.value = '';
+                    timeInput.value = '';
+
+                    displayBlockedUrl(rootDomain, expiration);
+                });
+
+                chrome.alarms.create(rootDomain, { when: expiration });
             });
-
-            chrome.alarms.create(url, { when: expiration });
-        });
+        } catch (error) {
+            messageDiv.textContent = 'Invalid URL format.';
+        }
     });
 });
 
