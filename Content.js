@@ -117,6 +117,8 @@ const generateSTYLES = () => {
   `;
 };
 
+
+//Generate clouds for homescreen
 const generateHTML = (pageName) => {
   return `
     <div id="clouds">
@@ -135,6 +137,8 @@ const generateHTML = (pageName) => {
     </div>`;
 };
 
+//function to compare current URL with the stored blocked URLs and checks if it is blocked
+//also verifies if a blocked URL expires
 const checkBlockedUrls = () => {
   chrome.storage.sync.get('blockedUrls', (data) => {
       const blockedUrls = data.blockedUrls || [];

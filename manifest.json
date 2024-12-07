@@ -13,5 +13,11 @@
       "matches": ["<all_urls>"],
       "js": ["Content.js"]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["logo.PNG"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }
