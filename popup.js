@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const parsedUrl = new URL(url);
             const domain = parsedUrl.hostname;
             if (!/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain)) {
-                messageDiv.textContent = 'Please enter a valid URL; www.example.com';
+                messageDiv.textContent = 'Please enter a valid URL; example.com';
                 return;
             }
             const time = parseInt(timeInput.value.trim());
