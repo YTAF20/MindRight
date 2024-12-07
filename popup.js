@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadBlockedUrls();
 
+    //Check to see if information is entered in the correct format
     blockButton.addEventListener('click', () => {
         let url = urlInput.value.trim();
 
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const blockedUrls = data.blockedUrls || [];
 
                 if (blockedUrls.some(block => block.url === domain)) {
-                    messageDiv.textContent = 'Domain already blocked.';
+                    messageDiv.textContent = 'Website already blocked.';
                     return;
                 }
 
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 blockedUrls.push({ url: domain, expiration });
                 chrome.storage.sync.set({ blockedUrls }, () => {
-                    messageDiv.textContent = 'Domain blocked successfully!';
+                    messageDiv.textContent = 'Website blocked successfully!';
                     urlInput.value = '';
                     timeInput.value = '';
 
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 chrome.alarms.create(domain, { when: expiration });
             });
         } catch (error) {
-            messageDiv.textContent = 'Invalid URL format.';
+            messageDiv.textContent = 'Invalid format or missing field';
         }
     });
 });
