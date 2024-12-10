@@ -3,7 +3,9 @@
   "name": "MindRight",
   "version": "0.1.2",
   "permissions": ["storage", "alarms", "tabs", "notifications"],
-  "action": {},
+  "action": {
+    "default_popup": "options.html"
+  },
   "background": {
     "service_worker": "background.js"
   },

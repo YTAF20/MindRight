@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //Check to see if information is entered in the correct format; URL validation
     blockButton.addEventListener('click', () => {
         let url = urlInput.value.trim();
+
         if (!url.startsWith('http')) {
             url = `http://${url}`;
         }
@@ -27,25 +28,44 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             chrome.storage.sync.get('blockedUrls', (data) => {
                 const blockedUrls = data.blockedUrls || [];
+
                 if (blockedUrls.some(block => block.url === domain)) {
                     messageDiv.textContent = 'Website already blocked.';
                     return;
                 }
+
                 const expiration = Date.now() + time * 60000;
+
                 blockedUrls.push({ url: domain, expiration });
                 chrome.storage.sync.set({ blockedUrls }, () => {
                     messageDiv.textContent = 'Website blocked successfully!';
                     urlInput.value = '';
                     timeInput.value = '';
+
                     displayBlockedUrl(domain, expiration);
                 });
+
                 chrome.alarms.create(domain, { when: expiration });
             });
         } catch (error) {
-            messageDiv.textContent = 'Invalid URL or missing field';
+            messageDiv.textContent = 'Invalid format or missing field';
         }
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('themeToggle');
+    toggleBtn.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            toggleBtn.textContent = '☀'; // sun icon for toggling back to light mode
+        } else {
+            toggleBtn.textContent = '🌙'; // moon icon for toggling to dark mode
+        }
+    });
+
+    // Add your other logic here for blocking URLs, etc.
+});
+
 
 // Function to load and display blocked URLs with time left
 const loadBlockedUrls = () => {
@@ -63,6 +83,7 @@ const displayBlockedUrl = (url, expiration) => {
     const timeLeft = Math.max(0, Math.floor((expiration - Date.now()) / 1000)); // Time left in seconds
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
+
     const li = document.createElement('li');
     li.textContent = `${url} - Time left: ${minutes}m ${seconds}s`;
     blockedList.appendChild(li);
@@ -73,6 +94,7 @@ const displayBlockedUrl = (url, expiration) => {
         const updatedSeconds = updatedTimeLeft % 60;
 
         li.textContent = `${url} - Time left: ${updatedMinutes}m ${updatedSeconds}s`;
+
        
         if (updatedTimeLeft <= 0) {
             li.remove(); 
