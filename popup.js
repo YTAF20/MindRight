@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+    //Waits for DOM to load and initializes varaibles to interact with UI elements
     const blockButton = document.getElementById('blockButton');
     const urlInput = document.getElementById('urlInput');
     const timeInput = document.getElementById('timeInput');
     const messageDiv = document.getElementById('message');
     const blockedList = document.getElementById('blockedList');
-
     loadBlockedUrls();
 
-    //Check to see if information is entered in the correct format
+    //Check to see if information is entered in the correct format; URL validation
     blockButton.addEventListener('click', () => {
         let url = urlInput.value.trim();
 

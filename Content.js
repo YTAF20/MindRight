@@ -20,7 +20,6 @@ const generateSTYLES = () => {
         font-size: 220px;
         position: relative;
         display: inline-block;
-        z-index: 2;
         height: 250px;
         letter-spacing: 15px;
       }
@@ -46,13 +45,8 @@ const generateSTYLES = () => {
         position: relative;
         display: inline-block;
         margin: 19px 0px 0px 0px;
-        z-index: 3;
         width: 100%;
         line-height: 1.2em;
-      }
-      .right {
-        float: right;
-        width: 60%;
       }
       hr {
         padding: 0;
@@ -63,7 +57,6 @@ const generateSTYLES = () => {
         margin: 0px auto;
         width: 420px;
         height: 10px;
-        z-index: -10;
       }
       hr:after {
         display: inline-block;
@@ -81,7 +74,6 @@ const generateSTYLES = () => {
         border-radius: 100px;
         position: absolute;
         margin: 120px auto 20px;
-        z-index: -1;
         transition: ease 1s;
       }
       .cloud:after,
@@ -89,7 +81,6 @@ const generateSTYLES = () => {
         content: "";
         position: absolute;
         background: #fff;
-        z-index: -1;
       }
       .cloud:after {
         width: 100px;
@@ -105,35 +96,23 @@ const generateSTYLES = () => {
         right: 50px;
         border-radius: 200px;
       }
-      @-webkit-keyframes moveclouds {
-        0% {
-          margin-left: 1000px;
-        }
-        100% {
-          margin-left: -1000px;
-        }
-      }
     </style>
   `;
 };
 
-
-//Generate clouds for homescreen
+//Generates the screen when trying to access a blocked website
 const generateHTML = (pageName) => {
   return `
     <div id="clouds">
-      <div class="cloud x1"></div>
-      <div class="cloud x1_5"></div>
-      <div class="cloud x2"></div>
-      <div class="cloud x3"></div>
-      <div class="cloud x4"></div>
-      <div class="cloud x5"></div>
+      <div class="cloud" style="top: 20px; left: 20px;"></div>
+      <div class="cloud" style="top: 120px; right: 30px;"></div>
+      <div class="cloud" style="bottom: 20px; right: 390px;"></div>
     </div>
     <div class='c'>
       <div class='_404'>404</div>
       <hr>
       <div class='_1'>GET BACK TO WORK</div>
-      <div class='_2'>STUDYING > ${pageName}</div>
+      <div class='_2'>No more visiting ${pageName}</div>
     </div>`;
 };
 
@@ -156,6 +135,5 @@ const checkBlockedUrls = () => {
       }
   });
 };
-
 
 checkBlockedUrls();
