@@ -52,18 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+//Listens for a toggle change for Dark/Light mode
 document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('themeToggle');
     toggleBtn.addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
         if (document.body.classList.contains('dark-mode')) {
-            toggleBtn.textContent = '☀'; // sun icon for toggling back to light mode
+            toggleBtn.textContent = '☀'; 
         } else {
-            toggleBtn.textContent = '🌙'; // moon icon for toggling to dark mode
+            toggleBtn.textContent = '🌙'; 
         }
     });
-
-    // Add your other logic here for blocking URLs, etc.
 });
 
 

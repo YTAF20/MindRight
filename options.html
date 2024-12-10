@@ -24,7 +24,7 @@
             --cloud-shadow: rgba(255, 255, 255, 0.8);
         }
 
-        /* Dark mode overrides */
+        /* Dark mode */
         body.dark-mode {
             --bg-gradient-start: #2c3e50;
             --bg-gradient-mid: #34495e;
@@ -40,9 +40,7 @@
             --list-border-color: #95a5a6;
             --message-color: #e74c3c;
             --cloud-color: #cccccc;
-            /* Changed cloud color in dark mode */
             --cloud-shadow: rgba(255, 255, 255, 0.2);
-            /* Adjusted cloud shadow for dark mode */
         }
 
         body {
@@ -72,11 +70,9 @@
             0% {
                 background-position: 0% 50%;
             }
-
             50% {
                 background-position: 100% 50%;
             }
-
             100% {
                 background-position: 0% 50%;
             }
@@ -94,11 +90,9 @@
             0% {
                 transform: translateX(-200px) translateY(0);
             }
-
             50% {
                 transform: translateX(50vw) translateY(-40px);
             }
-
             100% {
                 transform: translateX(100vw) translateY(0);
             }
@@ -259,7 +253,7 @@
             border-bottom: 1px solid var(--list-border-color);
         }
 
-        /* Theme Toggle Button (smaller) */
+        /* Dark/Light Toggle Button */
         .theme-toggle {
             position: absolute;
             top: 10px;
@@ -297,11 +291,10 @@
     <div class="cloud"></div>
     <div class="cloud"></div>
 
-    <!-- Theme Toggle Button -->
-    <!-- By default shows a moon (dark mode icon) since currently in light mode -->
+    <!-- Dark/Light Mode Button -->
     <button class="theme-toggle" id="themeToggle">🌙</button>
 
-    <!-- Home page screen where user enters URL and time information -->
+    <!-- Home page where user enters URL and time information -->
     <div class="container">
         <div class="title">MindRight</div>
         <div class="subtitle">Block a Website</div>
