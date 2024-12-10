@@ -1,15 +1,55 @@
-<!-- Homepage of MindRight where users enter URL and time to block a website -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>MindRight - Block a Website</title>
     <style>
+        /* Light mode variables (default) */
+        :root {
+            --bg-gradient-start: #dfe6e9;
+            --bg-gradient-mid: #b2bec3;
+            --bg-primary: rgba(255, 255, 255, 0.85);
+            --text-title: #2c3e50;
+            --text-subtitle: #34495e;
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --input-text: #333;
+            --button-bg: #27ae60;
+            --button-bg-hover: #218838;
+            --border-color: rgba(0, 0, 0, 0.2);
+            --blocked-text: #2c3e50;
+            --list-border-color: #7f8c8d;
+            --message-color: #e74c3c;
+            --cloud-color: #4e4d4d;
+            --cloud-shadow: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Dark mode overrides */
+        body.dark-mode {
+            --bg-gradient-start: #2c3e50;
+            --bg-gradient-mid: #34495e;
+            --bg-primary: rgba(60, 70, 90, 0.85);
+            --text-title: #ecf0f1;
+            --text-subtitle: #bdc3c7;
+            --input-bg: rgba(255, 255, 255, 0.2);
+            --input-text: #ecf0f1;
+            --button-bg: #34495e;
+            --button-bg-hover: #2c3e50;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --blocked-text: #ecf0f1;
+            --list-border-color: #95a5a6;
+            --message-color: #e74c3c;
+            --cloud-color: #cccccc;
+            /* Changed cloud color in dark mode */
+            --cloud-shadow: rgba(255, 255, 255, 0.2);
+            /* Adjusted cloud shadow for dark mode */
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            overflow: hidden; 
-            height: 100vh; 
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,42 +62,123 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #2c3e50, #34495e, #2c3e50); 
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-start));
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
             z-index: -2;
         }
 
         @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .cloud {
             position: absolute;
-            background: white;
+            background: var(--cloud-color);
             border-radius: 50px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px var(--cloud-shadow);
             opacity: 0.8;
         }
 
         @keyframes float {
-            0% { transform: translateX(-200px) translateY(0); }
-            50% { transform: translateX(50vw) translateY(-40px); }
-            100% { transform: translateX(100vw) translateY(0); }
+            0% {
+                transform: translateX(-200px) translateY(0);
+            }
+
+            50% {
+                transform: translateX(50vw) translateY(-40px);
+            }
+
+            100% {
+                transform: translateX(100vw) translateY(0);
+            }
         }
 
-        .cloud:nth-child(1) { width: 120px; height: 60px; top: 50px; left: -150px; animation: float 15s linear infinite; }
-        .cloud:nth-child(2) { width: 150px; height: 70px; top: 150px; left: -200px; animation: float 18s linear infinite; }
-        .cloud:nth-child(3) { width: 100px; height: 50px; top: 300px; left: -100px; animation: float 12s linear infinite; }
-        .cloud:nth-child(4) { width: 130px; height: 65px; top: 220px; left: -250px; animation: float 16s linear infinite; }
-        .cloud:nth-child(5) { width: 140px; height: 70px; top: 80px; left: -200px; animation: float 14s linear infinite; }
-        .cloud:nth-child(6) { width: 150px; height: 75px; top: 400px; left: -200px; animation: float 17s linear infinite; }
-        .cloud:nth-child(7) { width: 120px; height: 60px; top: 500px; left: -100px; animation: float 19s linear infinite; }
+        .cloud:nth-child(1) {
+            width: 120px;
+            height: 60px;
+            top: 50px;
+            left: -150px;
+            animation: float 15s linear infinite;
+        }
+
+        .cloud:nth-child(2) {
+            width: 150px;
+            height: 70px;
+            top: 150px;
+            left: -200px;
+            animation: float 18s linear infinite;
+        }
+
+        .cloud:nth-child(3) {
+            width: 100px;
+            height: 50px;
+            top: 300px;
+            left: -100px;
+            animation: float 12s linear infinite;
+        }
+
+        .cloud:nth-child(4) {
+            width: 130px;
+            height: 65px;
+            top: 220px;
+            left: -250px;
+            animation: float 16s linear infinite;
+        }
+
+        .cloud:nth-child(5) {
+            width: 140px;
+            height: 70px;
+            top: 80px;
+            left: -200px;
+            animation: float 14s linear infinite;
+        }
+
+        .cloud:nth-child(6) {
+            width: 150px;
+            height: 75px;
+            top: 400px;
+            left: -200px;
+            animation: float 17s linear infinite;
+        }
+
+        .cloud:nth-child(7) {
+            width: 120px;
+            height: 60px;
+            top: 500px;
+            left: -100px;
+            animation: float 19s linear infinite;
+        }
+
+        .cloud:nth-child(8) {
+            width: 130px;
+            height: 60px;
+            top: 600px;
+            left: -180px;
+            animation: float 20s linear infinite;
+        }
+
+        .cloud:nth-child(9) {
+            width: 110px;
+            height: 55px;
+            top: 350px;
+            left: -250px;
+            animation: float 22s linear infinite;
+        }
+
 
         .container {
-            background-color: rgba(60, 70, 90, 0.85); 
+            background-color: var(--bg-primary);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -71,13 +192,13 @@
         .title {
             font-size: 24px;
             font-weight: bold;
-            color: #ecf0f1;
+            color: var(--text-title);
             margin-bottom: 10px;
         }
 
         .subtitle {
             font-size: 16px;
-            color: #bdc3c7;
+            color: var(--text-subtitle);
             margin-bottom: 20px;
         }
 
@@ -87,16 +208,16 @@
             padding: 8px;
             margin: 8px 0;
             border-radius: 5px;
-            border: 1px solid rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border-color);
             box-sizing: border-box;
-            background-color: rgba(255, 255, 255, 0.9); 
-            color: #333; 
+            background-color: var(--input-bg);
+            color: var(--input-text);
         }
 
         button {
             width: 100%;
             padding: 10px;
-            background-color: #27ae60; 
+            background-color: var(--button-bg);
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -105,12 +226,12 @@
         }
 
         button:hover {
-            background-color: #218838; 
+            background-color: var(--button-bg-hover);
         }
 
         #message {
             margin-top: 10px;
-            color: #e74c3c;
+            color: var(--message-color);
             font-size: 14px;
         }
 
@@ -121,7 +242,7 @@
 
         .blocked-list h4 {
             font-size: 16px;
-            color: #ecf0f1;
+            color: var(--text-title);
             margin: 0;
         }
 
@@ -133,12 +254,36 @@
         }
 
         .blocked-list li {
-            color: #bdc3c7;
+            color: var(--blocked-text);
             padding: 5px 0;
-            border-bottom: 1px solid #7f8c8d;
+            border-bottom: 1px solid var(--list-border-color);
+        }
+
+        /* Theme Toggle Button (smaller) */
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 30px;
+            text-align: center;
+            z-index: 2;
+            padding: 0;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <div class="background"></div>
 
@@ -149,6 +294,12 @@
     <div class="cloud"></div>
     <div class="cloud"></div>
     <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+
+    <!-- Theme Toggle Button -->
+    <!-- By default shows a moon (dark mode icon) since currently in light mode -->
+    <button class="theme-toggle" id="themeToggle">🌙</button>
 
     <!-- Home page screen where user enters URL and time information -->
     <div class="container">
@@ -163,8 +314,19 @@
             <ul id="blockedList"></ul>
         </div>
     </div>
-     
-    <!-- Links and runs popup.js -->
+
     <script src="popup.js"></script>
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        toggleBtn.addEventListener('click',function() {
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')) {
+                toggleBtn.textContent = '☀'; // sun icon for toggling back to light mode
+            } else {
+                toggleBtn.textContent = '🌙'; // moon icon for toggling to dark mode
+            }
+        });
+    </script>
 </body>
+
 </html>
