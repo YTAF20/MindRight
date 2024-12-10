@@ -1,3 +1,4 @@
+//Contains styling aswell as functions to check storage for blocked URLS
 const generateSTYLES = () => {
   return `
     <style>
@@ -106,7 +107,7 @@ const generateHTML = (pageName) => {
     <div id="clouds">
       <div class="cloud" style="top: 20px; left: 20px;"></div>
       <div class="cloud" style="top: 120px; right: 30px;"></div>
-      <div class="cloud" style="bottom: 20px; right: 390px;"></div>
+      <div class="cloud" style="bottom: 20px; right: 150px;"></div>
     </div>
     <div class='c'>
       <div class='_404'>404</div>
